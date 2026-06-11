@@ -244,7 +244,7 @@ function preloadPatch() {
 function mainWorldPatchScript() {
   return `
 (() => {
-  const patchVersion = "2026-06-11-project-dialog-v6";
+  const patchVersion = "2026-06-11-menu-polish-v7";
   if (globalThis.__antigravityZhCnMainWorldPatchVersion === patchVersion) return;
   globalThis.__antigravityZhCnMainWorldPatchVersion = patchVersion;
   globalThis.__antigravityZhCnMainWorldPatch = true;
@@ -259,6 +259,25 @@ function mainWorldPatchScript() {
     "New Project": "新建项目",
     "Quick Start": "快速开始",
     "Select folder(s)": "选择文件夹",
+    "Group By": "分组方式",
+    "Project": "项目",
+    "Status": "状态",
+    "None": "无",
+    "Sort Conversations": "对话排序",
+    "Last Updated": "最近更新",
+    "Alphabetical (A-Z)": "按字母顺序 (A-Z)",
+    "Date Added": "添加时间",
+    "Subtitles": "副标题",
+    "Worktree": "工作树",
+    "No Subtitle": "无副标题",
+    "Command Palette": "命令面板",
+    "Zoom In": "放大",
+    "Zoom Out": "缩小",
+    "Reset Zoom": "重置缩放",
+    "Toggle Developer Tools": "切换开发者工具",
+    "Minimize": "最小化",
+    "Maximize": "最大化",
+    "Close": "关闭",
     "Conversation History": "对话历史",
     "Scheduled Tasks": "定时任务",
     "Projects": "项目",
@@ -450,6 +469,7 @@ function mainWorldPatchScript() {
     ["The browser subagent can be invoked by typing /browser in the conversation input box.", "可在对话输入框中输入 /browser 调用浏览器子智能体。"],
     [" of the customization budget is available.", " 的自定义预算可用。"],
     ["Typeahead menu", "自动补全菜单"],
+    ["Instantly create a new project and folder to start building.", "立即创建新项目和文件夹，开始构建。"],
     ["Refreshes in ", "刷新倒计时："],
     [" hours", " 小时"],
     [" hour", " 小时"],
@@ -521,14 +541,12 @@ function patchPreload(text) {
 function patchUtils(text) {
   const sourceLine = `const __antigravityZhCnMainWorldPatchSource = ${JSON.stringify(mainWorldPatchScript())};`;
   if (text.includes("__antigravityZhCnMainWorldPatchSource")) {
-    const updated = text.replace(
-      /const __antigravityZhCnMainWorldPatchSource = "(?:\\.|[^"\\])*";/,
-      sourceLine
-    );
-    if (updated === text) {
+    const start = text.indexOf("const __antigravityZhCnMainWorldPatchSource = ");
+    const nextLine = text.indexOf("\n", start);
+    if (start < 0 || nextLine < 0) {
       throw new Error("Could not replace existing zh-CN main world patch source in dist/utils.js");
     }
-    return updated;
+    return text.slice(0, start) + sourceLine + text.slice(nextLine);
   }
   const marker = "(0, loadingOverlay_1.attachLoadingOverlay)(win, foregroundColor, backgroundColor);";
   const injection = `
@@ -544,6 +562,52 @@ function patchUtils(text) {
     throw new Error("Could not find createWindow injection point in dist/utils.js");
   }
   return text.replace(marker, marker + injection);
+}
+
+function patchMenu(text) {
+  const marker = "    electron_1.Menu.setApplicationMenu(menu);";
+  const injection = `    // zh-CN display patch: translate Electron default menu labels.
+    const __antigravityZhCnMenuLabels = {
+        'File': '文件',
+        'View': '视图',
+        'Window': '窗口',
+        'New Conversation': '新建对话',
+        'Create Project': '创建项目',
+        'Command Palette': '命令面板',
+        'Zoom In': '放大',
+        'Zoom Out': '缩小',
+        'Reset Zoom': '重置缩放',
+        'Toggle Developer Tools': '切换开发者工具',
+        'Minimize': '最小化',
+        'Maximize': '最大化',
+        'Close': '关闭',
+    };
+    const __antigravityZhCnTranslateMenu = (menuToTranslate) => {
+        for (const item of menuToTranslate.items || []) {
+            if (__antigravityZhCnMenuLabels[item.label]) {
+                item.label = __antigravityZhCnMenuLabels[item.label];
+            }
+            if (item.submenu) {
+                __antigravityZhCnTranslateMenu(item.submenu);
+            }
+        }
+    };
+    __antigravityZhCnTranslateMenu(menu);
+`;
+  if (text.includes("__antigravityZhCnTranslateMenu")) {
+    const updated = text.replace(
+      /    \/\/ zh-CN display patch: translate Electron default menu labels\.[\s\S]*?    __antigravityZhCnTranslateMenu\(menu\);\r?\n/,
+      injection
+    );
+    if (updated === text) {
+      throw new Error("Could not replace existing zh-CN menu translation block in dist/menu.js");
+    }
+    return updated;
+  }
+  if (!text.includes(marker)) {
+    throw new Error("Could not find Menu.setApplicationMenu injection point in dist/menu.js");
+  }
+  return text.replace(marker, injection + marker);
 }
 
 function main() {
@@ -598,11 +662,21 @@ function main() {
     ])
   );
   patch("dist/menu.js", (text) =>
-    replaceAll(text, [
+    patchMenu(replaceAll(text, [
       ["label: 'New Window'", "label: '新建窗口'"],
+      ["label: 'New Conversation'", "label: '新建对话'"],
+      ["label: 'Create Project'", "label: '创建项目'"],
+      ["label: 'Command Palette'", "label: '命令面板'"],
+      ["label: 'Zoom In'", "label: '放大'"],
+      ["label: 'Zoom Out'", "label: '缩小'"],
+      ["label: 'Reset Zoom'", "label: '重置缩放'"],
+      ["label: 'Toggle Developer Tools'", "label: '切换开发者工具'"],
+      ["label: 'Minimize'", "label: '最小化'"],
+      ["label: 'Maximize'", "label: '最大化'"],
+      ["label: 'Close'", "label: '关闭'"],
       ["addItemToSubmenu(menu, 'File'", "addItemToSubmenu(menu, 'File'"],
       ["label: 'Docs'", "label: '文档'"],
-    ])
+    ]))
   );
   patch("dist/tray.js", (text) =>
     regexReplaceAll(text, [
