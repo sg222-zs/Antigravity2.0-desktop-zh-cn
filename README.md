@@ -27,7 +27,7 @@ install-zh-cn.cmd
 
 ## 恢复原版
 
-双击运行：
+以管理员身份运行：
 
 ```text
 restore-original.cmd
