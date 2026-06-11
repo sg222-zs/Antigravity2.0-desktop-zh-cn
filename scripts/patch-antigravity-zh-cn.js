@@ -244,7 +244,7 @@ function preloadPatch() {
 function mainWorldPatchScript() {
   return `
 (() => {
-  const patchVersion = "2026-06-11-menu-polish-v7";
+  const patchVersion = "2026-06-11-popup-scan-v8";
   if (globalThis.__antigravityZhCnMainWorldPatchVersion === patchVersion) return;
   globalThis.__antigravityZhCnMainWorldPatchVersion = patchVersion;
   globalThis.__antigravityZhCnMainWorldPatch = true;
@@ -270,6 +270,7 @@ function mainWorldPatchScript() {
     "Subtitles": "副标题",
     "Worktree": "工作树",
     "No Subtitle": "无副标题",
+    "No conversations yet": "暂无对话",
     "Command Palette": "命令面板",
     "Zoom In": "放大",
     "Zoom Out": "缩小",
@@ -509,6 +510,7 @@ function mainWorldPatchScript() {
           continue;
         }
         translateAttrs(node);
+        if (node.shadowRoot) walk(node.shadowRoot);
       } else if (node.nodeType === Node.TEXT_NODE) {
         const parent = node.parentElement;
         if (parent && !blocked.has(parent.tagName) && !parent.isContentEditable) {
@@ -529,6 +531,8 @@ function mainWorldPatchScript() {
     clearTimeout(globalThis.__antigravityZhCnMainWorldPatchTimer);
     globalThis.__antigravityZhCnMainWorldPatchTimer = setTimeout(run, 30);
   }).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true });
+  clearInterval(globalThis.__antigravityZhCnMainWorldPatchInterval);
+  globalThis.__antigravityZhCnMainWorldPatchInterval = setInterval(run, 500);
 })();
 `;
 }
@@ -595,14 +599,14 @@ function patchMenu(text) {
     __antigravityZhCnTranslateMenu(menu);
 `;
   if (text.includes("__antigravityZhCnTranslateMenu")) {
-    const updated = text.replace(
-      /    \/\/ zh-CN display patch: translate Electron default menu labels\.[\s\S]*?    __antigravityZhCnTranslateMenu\(menu\);\r?\n/,
-      injection
-    );
-    if (updated === text) {
+    const start = text.indexOf("    // zh-CN display patch: translate Electron default menu labels.");
+    const call = "    __antigravityZhCnTranslateMenu(menu);";
+    const callStart = text.indexOf(call, start);
+    const end = callStart < 0 ? -1 : text.indexOf("\n", callStart);
+    if (start < 0 || callStart < 0 || end < 0) {
       throw new Error("Could not replace existing zh-CN menu translation block in dist/menu.js");
     }
-    return updated;
+    return text.slice(0, start) + injection + text.slice(end + 1);
   }
   if (!text.includes(marker)) {
     throw new Error("Could not find Menu.setApplicationMenu injection point in dist/menu.js");
