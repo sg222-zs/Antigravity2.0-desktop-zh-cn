@@ -244,8 +244,20 @@ function preloadPatch() {
 function mainWorldPatchScript() {
   return `
 (() => {
-  const patchVersion = "2026-06-11-popup-scan-v8";
-  if (globalThis.__antigravityZhCnMainWorldPatchVersion === patchVersion) return;
+  const patchVersion = "2026-06-13-settings-deep-v17";
+  if (
+    globalThis.__antigravityZhCnMainWorldPatchVersion === patchVersion &&
+    globalThis.__antigravityZhCnTranslateNow
+  ) {
+    globalThis.__antigravityZhCnTranslateNow();
+    return;
+  }
+  clearInterval(globalThis.__antigravityZhCnMainWorldPatchInterval);
+  clearTimeout(globalThis.__antigravityZhCnMainWorldPatchTimer);
+  for (const observer of globalThis.__antigravityZhCnMainWorldPatchObservers || []) {
+    try { observer.disconnect(); } catch {}
+  }
+  globalThis.__antigravityZhCnMainWorldPatchObservers = [];
   globalThis.__antigravityZhCnMainWorldPatchVersion = patchVersion;
   globalThis.__antigravityZhCnMainWorldPatch = true;
 
@@ -254,11 +266,29 @@ function mainWorldPatchScript() {
     "View": "视图",
     "Window": "窗口",
     "New Conversation": "新建对话",
+    "New Conversation in Project": "在项目中新建对话",
+    "Pin Conversation": "置顶对话",
+    "Unpin Conversation": "取消置顶对话",
+    "Archive Conversation": "归档对话",
+    "Unarchive Conversation": "取消归档对话",
+    "Mark As Unread": "标为未读",
+    "Mark as Unread": "标为未读",
+    "Mark As Read": "标为已读",
+    "Mark as Read": "标为已读",
+    "Rename": "重命名",
+    "Delete Conversation": "删除对话",
+    "Toggle Auxiliary Pane": "切换辅助面板",
+    "Copy": "复制",
+    "Good response": "好的回复",
+    "Bad response": "不好的回复",
+    "User message": "用户消息",
+    "Agent response": "智能体回复",
     "Create New Project": "创建新项目",
     "Create Project": "创建项目",
     "New Project": "新建项目",
     "Quick Start": "快速开始",
     "Select folder(s)": "选择文件夹",
+    "Create a new project. You can add folders to it now or later.": "创建新项目。你可以现在或稍后添加文件夹。",
     "Group By": "分组方式",
     "Project": "项目",
     "Status": "状态",
@@ -312,6 +342,43 @@ function mainWorldPatchScript() {
     "Network Access Rules": "网络访问规则",
     "Terminal Commands": "终端命令",
     "Open": "打开",
+    "Add": "添加",
+    "Remove": "移除",
+    "Allow": "允许",
+    "Deny": "拒绝",
+    "Allowed": "允许",
+    "Denied": "拒绝",
+    "Allowed Paths": "允许的路径",
+    "Denied Paths": "拒绝的路径",
+    "Allowed URLs": "允许的 URL",
+    "Denied URLs": "拒绝的 URL",
+    "Allowed Commands": "允许的命令",
+    "Denied Commands": "拒绝的命令",
+    "Add Rule": "添加规则",
+    "Add rule": "添加规则",
+    "Remove Rule": "移除规则",
+    "Save Changes": "保存更改",
+    "Save changes": "保存更改",
+    "Create": "创建",
+    "Name": "名称",
+    "Description": "描述",
+    "Path": "路径",
+    "Command": "命令",
+    "Arguments": "参数",
+    "Environment Variables": "环境变量",
+    "Server Name": "服务器名称",
+    "Install": "安装",
+    "Installed": "已安装",
+    "Installing": "正在安装",
+    "Enabled": "已启用",
+    "Disabled": "已禁用",
+    "Enable": "启用",
+    "Disable": "禁用",
+    "Request Review": "请求确认",
+    "Always Allow": "始终允许",
+    "Always Deny": "始终拒绝",
+    "Ask Every Time": "每次询问",
+    "Ask every time": "每次询问",
     "Learn more.": "了解更多。",
     "global settings": "全局设置",
     "Toggle Sidebar": "切换侧边栏",
@@ -364,7 +431,9 @@ function mainWorldPatchScript() {
     "Terms of Service": "服务条款",
     "Configure global allowed and denied resource permissions. Learn more.": "配置全局允许和拒绝的资源权限。了解更多。",
     "Project-Specific Settings": "项目专属设置",
+    "Project Settings": "项目设置",
     "Go To Projects": "前往项目",
+    "Go to Projects": "前往项目",
     "File Permissions": "文件权限",
     "Network Permissions": "网络权限",
     "Terminal & Tooling Permissions": "终端和工具权限",
@@ -415,6 +484,13 @@ function mainWorldPatchScript() {
   }));
 
   const phrases = [
+    ["它需要安装 Google Chrome to be installed.", "它需要安装 Google Chrome。"],
+    ["它需要安装 Google Chrome to be installed", "它需要安装 Google Chrome"],
+    ["to be installed. ", "。"],
+    ["to be installed.", "。"],
+    ["了解更多.", "了解更多。"],
+    ["Inherits from 全局设置. Local permissions have higher priority. 了解更多.", "继承自全局设置。本地权限优先级更高。了解更多。"],
+    ["Inherits from 全局设置. Local permissions have higher priority.", "继承自全局设置。本地权限优先级更高。"],
     ["Agent settings and permissions for conversations outside of projects.", "项目外对话的智能体设置和权限。"],
     ["Choose a predefined security preset for the agent. This controls terminal auto-execution policy, and file access policy.", "为智能体选择预设安全策略。它会控制终端自动执行策略和文件访问策略。"],
     ["Configures how the agent tries to access files outside of its working folders.", "配置智能体如何访问工作文件夹之外的文件。"],
@@ -482,6 +558,7 @@ function mainWorldPatchScript() {
   ];
 
   const blocked = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "CODE", "PRE"]);
+  const observedRoots = new WeakSet();
   function translateValue(value) {
     if (!value || !value.trim) return value;
     const trimmed = value.trim();
@@ -499,40 +576,106 @@ function mainWorldPatchScript() {
       if (translated && translated !== value) el.setAttribute(attr, translated);
     }
   }
-  function walk(root) {
+  function translateTextNodes(root) {
     if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      try {
+        const parent = node.parentElement;
+        if (!parent || blocked.has(parent.tagName) || parent.isContentEditable) continue;
+        const translated = translateValue(node.nodeValue);
+        if (translated !== node.nodeValue) node.nodeValue = translated;
+      } catch {}
+    }
+  }
+  function translateAllAttrs(root) {
+    if (!root || !root.querySelectorAll) return;
+    try {
+      translateAttrs(root);
+      for (const el of root.querySelectorAll("*")) {
+        if (!blocked.has(el.tagName)) translateAttrs(el);
+        if (el.shadowRoot) {
+          translateTextNodes(el.shadowRoot);
+          translateAllAttrs(el.shadowRoot);
+        }
+      }
+    } catch {}
+  }
+  function hideSidebarRelativeTimes(root) {
+    if (!root || !root.querySelectorAll) return;
+    try {
+      for (const el of root.querySelectorAll("span")) {
+        const text = (el.textContent || "").trim();
+        if (!/^\\d+\\s*[smhdw]$/i.test(text)) continue;
+        const className = typeof el.className === "string" ? el.className : "";
+        if (!className.includes("text-muted-foreground") || !className.includes("min-w-4")) continue;
+        const parentClass = el.parentElement && typeof el.parentElement.className === "string"
+          ? el.parentElement.className
+          : "";
+        const rect = el.getBoundingClientRect();
+        if (rect.x > 320 && !parentClass.includes("group-hover:invisible")) continue;
+        el.style.display = "none";
+        el.setAttribute("aria-hidden", "true");
+      }
+    } catch {}
+  }
+  function scheduleRun() {
+    clearTimeout(globalThis.__antigravityZhCnMainWorldPatchTimer);
+    globalThis.__antigravityZhCnMainWorldPatchTimer = setTimeout(run, 20);
+  }
+  function observeRoot(root) {
+    if (!root || observedRoots.has(root)) return;
+    observedRoots.add(root);
+    try {
+      const observer = new MutationObserver(scheduleRun);
+      observer.observe(root, { childList: true, subtree: true, characterData: true, attributes: true });
+      globalThis.__antigravityZhCnMainWorldPatchObservers.push(observer);
+    } catch {}
+  }
+  function walk(root, seen = new WeakSet()) {
+    if (!root || seen.has(root)) return;
+    seen.add(root);
+    observeRoot(root);
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
     let node = walker.currentNode;
     while (node) {
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        if (blocked.has(node.tagName)) {
-          node = walker.nextSibling();
-          continue;
+      try {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          if (blocked.has(node.tagName)) {
+            node = walker.nextSibling();
+            continue;
+          }
+          translateAttrs(node);
+          if (node.shadowRoot) walk(node.shadowRoot, seen);
+        } else if (node.nodeType === Node.TEXT_NODE) {
+          const parent = node.parentElement;
+          if (parent && !blocked.has(parent.tagName) && !parent.isContentEditable) {
+            const translated = translateValue(node.nodeValue);
+            if (translated !== node.nodeValue) node.nodeValue = translated;
+          }
         }
-        translateAttrs(node);
-        if (node.shadowRoot) walk(node.shadowRoot);
-      } else if (node.nodeType === Node.TEXT_NODE) {
-        const parent = node.parentElement;
-        if (parent && !blocked.has(parent.tagName) && !parent.isContentEditable) {
-          const translated = translateValue(node.nodeValue);
-          if (translated !== node.nodeValue) node.nodeValue = translated;
-        }
-      }
+      } catch {}
       node = walker.nextNode();
     }
   }
-  function run() { try { walk(document.body || document.documentElement); } catch {} }
+  function run() {
+    try {
+      observeRoot(document.documentElement);
+      const root = document.body || document.documentElement;
+      translateTextNodes(root);
+      translateAllAttrs(root);
+      hideSidebarRelativeTimes(root);
+      walk(root);
+    } catch {}
+  }
+  globalThis.__antigravityZhCnTranslateNow = run;
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", run, { once: true });
   } else {
     run();
   }
-  new MutationObserver(() => {
-    clearTimeout(globalThis.__antigravityZhCnMainWorldPatchTimer);
-    globalThis.__antigravityZhCnMainWorldPatchTimer = setTimeout(run, 30);
-  }).observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true });
-  clearInterval(globalThis.__antigravityZhCnMainWorldPatchInterval);
-  globalThis.__antigravityZhCnMainWorldPatchInterval = setInterval(run, 500);
+  globalThis.__antigravityZhCnMainWorldPatchInterval = setInterval(run, 250);
 })();
 `;
 }
