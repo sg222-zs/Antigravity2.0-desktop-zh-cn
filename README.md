@@ -21,45 +21,6 @@ install-zh-cn.bat
 - 验证 ASAR 和 JS 语法
 - 重新启动 Antigravity
 
-## 残留英文排查
-
-补丁会在界面运行时持续扫描新增的 DOM、弹窗、下拉菜单、Shadow DOM 和同源 iframe。它也会监听点击、hover、聚焦、键盘等真实用户交互，并在交互后做多轮延迟扫描，用来覆盖 hover tooltip、下拉菜单、弹出面板和递归打开的新层级。
-
-补丁不会自动递归点击所有按钮。自动点击会误触删除项目、修改权限、安装组件、登录跳转或联网请求，因此这里采用“用户触发后自动翻译新内容”的方式。
-
-未命中的英文候选可以通过内置面板查看。先打开有英文残留的菜单、下拉框或弹窗，然后按：
-
-```text
-Ctrl + Shift + Alt + Z
-```
-
-面板可以拖动，按住标题栏移动即可。面板会显示“原文 / 译文”表格。你可以直接在右侧填写中文，点击“保存翻译”，补丁会把这些映射写入本机 `localStorage`，并立即重新扫描当前界面应用翻译。品牌名、项目名、插件说明等不想翻译的内容可以留空。
-
-如果能打开 DevTools，也可以直接读取变量：
-
-```javascript
-window.__antigravityZhCnUntranslated
-```
-
-候选收集只在点击、hover、聚焦等真实用户交互后的深度扫描中触发；普通后台扫描只负责翻译，不记录候选。候选收集会过滤邮箱、URL、本地路径、代码片段、快捷键、品牌名、单词碎片和已含中文的文本等明显不适合翻译的内容。它只保存在本机页面内存中，不会上传。
-
-也可以在不重新打包 `app.asar` 的情况下临时补充本地词库：
-
-```javascript
-window.__antigravityZhCnAddTranslations({
-  "Always Proceed": "始终继续",
-  "Full Machine": "整机访问"
-})
-```
-
-这些自定义翻译会保存在当前客户端的 `localStorage`，之后打开同类界面会自动应用。清空自定义词库：
-
-```javascript
-window.__antigravityZhCnClearCustomTranslations()
-```
-
-不建议默认接入在线翻译 API。界面文本里可能混有项目名、对话标题、路径或账号信息；如果需要接入翻译服务，应只使用本机离线翻译或手动筛选后的短 UI 文案。
-
 如果 Antigravity 安装在其他目录，可以在 PowerShell 中指定路径：
 
 ```powershell
