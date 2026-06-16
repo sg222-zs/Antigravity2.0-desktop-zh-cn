@@ -52,6 +52,7 @@ restore-original.bat
 ```powershell
 node --version
 ```
+没有Node.js的话需要另外自行安装
 
 ## 说明
 
