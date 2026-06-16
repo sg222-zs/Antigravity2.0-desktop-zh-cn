@@ -1,17 +1,16 @@
 @echo off
-chcp 65001 >nul
-setlocal
+setlocal EnableExtensions
 
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0restore-original.ps1" %*
-set "CODE=%ERRORLEVEL%"
+set "SCRIPT_DIR=%~dp0"
+set "PS_SCRIPT=%SCRIPT_DIR%restore-original.ps1"
 
-if not "%CODE%"=="0" (
+if not exist "%PS_SCRIPT%" (
+  echo ERROR: restore-original.ps1 not found:
+  echo %PS_SCRIPT%
   echo.
-  echo 恢复失败，错误码：%CODE%
   pause
-  exit /b %CODE%
+  exit /b 1
 )
 
-echo.
-echo 已恢复最近一次备份。
-pause
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%PS_SCRIPT%" -WaitOnExit %*
+exit /b %ERRORLEVEL%

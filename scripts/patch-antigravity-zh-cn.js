@@ -244,7 +244,7 @@ function preloadPatch() {
 function mainWorldPatchScript() {
   return `
 (() => {
-  const patchVersion = "2026-06-13-settings-deep-v17";
+  const patchVersion = "2026-06-16-marketplace-final-tails-v27";
   if (
     globalThis.__antigravityZhCnMainWorldPatchVersion === patchVersion &&
     globalThis.__antigravityZhCnTranslateNow
@@ -480,10 +480,379 @@ function mainWorldPatchScript() {
     "Sidebar": "侧边栏",
     "Describe the bug you encountered...": "描述你遇到的问题...",
     "Please list the steps to reproduce the issue": "请列出复现该问题的步骤",
-    "Refresh quota and credits data": "刷新配额和点数数据"
+    "Refresh quota and credits data": "刷新配额和点数数据",
+    "Plan": "套餐",
+    "Current Plan:": "当前套餐：",
+    "Current plan:": "当前套餐：",
+    "Gemini Models": "Gemini 模型",
+    "Weekly Limit": "每周限额",
+    "Five Hour Limit": "五小时限额",
+    "Five-Hour Limit": "五小时限额",
+    "5-hour limit": "五小时限额",
+    "Model Limits": "模型限额",
+    "Rate Limits": "速率限制",
+    "Always Proceed": "始终继续",
+    "Always proceed": "始终继续",
+    "Proceed": "继续",
+    "Block all browser JavaScript execution.": "阻止所有浏览器 JavaScript 执行。",
+    "Prompt for approval before running browser scripts.": "运行浏览器脚本前请求批准。",
+    "Allow full browser script execution without prompting.": "无需提示即可允许完整的浏览器脚本执行。",
+    "Full Machine": "整机访问",
+    "Full machine": "整机访问",
+    "Turbo Mode": "极速模式",
+    "Turbo mode": "极速模式",
+    "Requires manual review for all terminal commands and file accesses outside of the working folders.": "所有终端命令以及工作文件夹外的文件访问都需要手动确认。",
+    "All terminal commands require review. The agent can read or write to any file in the machine.": "所有终端命令都需要确认。智能体可以读取或写入此电脑上的任何文件。",
+    "Disables all safety barriers for maximal iteration velocity.": "禁用所有安全屏障，以获得最快迭代速度。",
+    "There are no customizations enabled.": "当前未启用任何自定义内容。",
+    "No customizations enabled.": "当前未启用任何自定义内容。",
+    "Add MCP +": "添加 MCP +",
+    "Add MCP Server": "添加 MCP 服务器",
+    "Add MCP server": "添加 MCP 服务器",
+    "MCP Servers": "MCP 服务器",
+    "Use Google Plugins to Build": "使用 Google 插件构建",
+    "Build with Google Plugins": "使用 Google 插件构建",
+    "Google Plugins": "Google 插件",
+    "No MCP servers": "没有 MCP 服务器",
+    "No MCP Servers": "没有 MCP 服务器",
+    "No MCP servers installed": "未安装 MCP 服务器",
+    "No MCP Servers Installed": "未安装 MCP 服务器",
+    "Browser Operations": "浏览器操作",
+    "Browser Operation Rules": "浏览器操作规则",
+    "Browser operation rules": "浏览器操作规则",
+    "JavaScript Execution Policy": "JavaScript 执行策略",
+    "Browser JavaScript Execution Policy": "浏览器 JavaScript 执行策略",
+    "Browser Javascript Execution Policy": "浏览器 JavaScript 执行策略",
+    "Actuation Rules": "操作规则",
+    "File Access Rule": "文件访问规则",
+    "Network Access Rule": "网络访问规则",
+    "Terminal Command": "终端命令",
+    "Sandbox Command": "沙盒外命令",
+    "Outside Sandbox Commands": "沙盒外命令",
+    "Open Rule Editor": "打开规则编辑器",
+    "Edit Rule": "编辑规则",
+    "Delete Rule": "删除规则",
+    "Save Rule": "保存规则",
+    "Customizations Budget": "自定义预算",
+    "Customization Budget": "自定义预算",
+    "Token Budget": "Token 预算",
+    "Quota": "配额",
+    "Limit": "限额",
+    "Limits": "限额",
+    "Used": "已使用",
+    "Refreshes": "刷新",
+    "Refreshes in": "刷新倒计时",
+    "Fully refreshes in": "完全刷新倒计时",
+    "Show all": "显示全部",
+    "Show All": "显示全部",
+    "Not in project": "不在项目中",
+    "Not In Project": "不在项目中",
+    "Dialog": "对话框",
+    "Conversation": "对话",
+    "Workspace": "工作区",
+    "Workspaces": "工作区",
+    "Folder": "文件夹",
+    "Folders": "文件夹",
+    "URL": "URL",
+    "URLs": "URL",
+    "Review": "确认",
+    "Reviews": "确认",
+    "Prompt": "提示",
+    "Prompts": "提示",
+    "Approval": "批准",
+    "Approvals": "批准",
+    "Rejected": "已拒绝",
+    "Approved": "已批准",
+    "Blocked": "已阻止",
+    "Proceeding": "正在继续",
+    "Model Context Protocol": "Model Context Protocol",
+    "MCP": "MCP",
+    "Google AI Pro": "Google AI Pro",
+    "Google AI Ultra": "Google AI Ultra",
+    "Add MCP Servers": "添加 MCP 服务器",
+    "Browser Actuation Permissions": "浏览器操作权限",
+    "Allow/deny agent browser actuation access to specific URLs.": "允许或拒绝智能体对特定 URL 的浏览器操作访问。",
+    "Allow/deny agent command execution outside the sandbox.": "允许或拒绝智能体在沙盒外执行命令。",
+    "Allow/deny agent read access to specific URLs or domains.": "允许或拒绝智能体读取特定 URL 或域名。",
+    "Allow/deny agent read access to specific files or directories.": "允许或拒绝智能体读取特定文件或目录。",
+    "Allow/deny agent write access to specific files or directories.": "允许或拒绝智能体写入特定文件或目录。",
+    "Allow/deny specific terminal commands.": "允许或拒绝特定终端命令。",
+    "File Reads": "文件读取",
+    "File Writes": "文件写入",
+    "Read URLs": "读取 URL",
+    "Execute URLs": "执行 URL",
+    "Delete server": "删除服务器",
+    "Dismiss error": "关闭错误",
+    "Loading MCP servers...": "正在加载 MCP 服务器...",
+    "Loading plugins...": "正在加载插件...",
+    "Loading token usage...": "正在加载 Token 使用量...",
+    "Loading workspace customizations...": "正在加载工作区自定义内容...",
+    "No token data available.": "暂无 Token 数据。",
+    "Editor": "编辑器",
+    "Editor Settings": "编辑器设置",
+    "Open Editor Settings": "打开编辑器设置",
+    "To modify editor settings, open Settings within the editor window.": "如需修改编辑器设置，请在编辑器窗口中打开设置。",
+    "Configure editor-specific behaviors and shortcuts.": "配置编辑器专属行为和快捷键。",
+    "Configure tab completion, suggestions, and navigation behavior.": "配置 Tab 补全、建议和导航行为。",
+    "Keyboard shortcuts for quick navigation and control.": "用于快速导航和控制的键盘快捷键。",
+    "Navigation": "导航",
+    "Layout Controls": "布局控制",
+    "Selection Actions": "选区操作",
+    "Show Selection Actions": "显示选区操作",
+    "Show \\"Edit\\" and \\"Chat\\" buttons when selecting text in the editor.": "在编辑器中选择文本时显示“编辑”和“聊天”按钮。",
+    "Find in Pane": "在面板中查找",
+    "Focus Input": "聚焦输入框",
+    "Open Conversation Picker": "打开对话选择器",
+    "Open File Search": "打开文件搜索",
+    "Select Next Conversation": "选择下一个对话",
+    "Select Previous Conversation": "选择上一个对话",
+    "Select Project": "选择项目",
+    "Toggle Model Selector": "切换模型选择器",
+    "Toggle Voice Recording": "切换语音录制",
+    "Bug Report": "错误报告",
+    "Feature Request": "功能请求",
+    "General Feedback": "一般反馈",
+    "Feedback Type": "反馈类型",
+    "Auth and Billing": "认证和账单",
+    "Actual behavior": "实际行为",
+    "Expected behavior": "预期行为",
+    "Steps to Reproduce": "复现步骤",
+    "Steps to reproduce the issue": "复现问题的步骤",
+    "Any error messages": "错误信息",
+    "Any error messages seen when trying to log in": "尝试登录时看到的错误信息",
+    "Any relevant information": "其他相关信息",
+    "Attach a screenshot (optional)": "附加截图（可选）",
+    "Attach Antigravity server logs": "附加 Antigravity 服务器日志",
+    "Attaching logs requires an email address": "附加日志需要邮箱地址",
+    "We recommend attaching logs. Attaching logs will help the Antigravity team act on and prioritize your feedback.": "建议附加日志。日志可以帮助 Antigravity 团队处理并优先安排你的反馈。",
+    "Please describe the issue in detail. The more actionable your feedback, the quicker our team can address your request. Some helpful information includes:": "请详细描述问题。反馈越可操作，团队就能越快处理你的请求。可包含以下信息：",
+    "Please describe the feature you'd like to see. The more detailed the requirements, the easier it will be for our team to incorporate your ideas. Some helpful information includes:": "请描述你希望看到的功能。需求越详细，团队越容易采纳你的想法。可包含以下信息：",
+    "Please describe your auth or billing issue. More details will help our support team resolve your issue quicker. Some helpful information includes:": "请描述你的认证或账单问题。更多细节可帮助支持团队更快解决。可包含以下信息：",
+    "For any feedback that does not fit into the above categories.": "用于不属于以上类别的其他反馈。",
+    "How this feature would help you and other users": "这个功能如何帮助你和其他用户",
+    "What is missing in your workflow": "你的工作流缺少什么",
+    "What you would like to see to address this gap in your workflow": "你希望通过什么方式补齐这个工作流缺口",
+    "What functionality you expect your account tier to have available that is missing": "你期望当前账号等级应具备但缺失的功能",
+    "What quota or feature is being incorrectly limited": "哪个配额或功能被错误限制",
+    "Submit": "提交",
+    "Download": "下载",
+    "Setup": "设置",
+    "Recommended": "推荐",
+    "Marketplace": "市场",
+    "Marketplace Gallery URL": "市场图库 URL",
+    "Marketplace Item URL": "市场条目 URL",
+    "Changes the base URL for marketplace search results. You must restart Antigravity to use the new marketplace after changing this value.": "更改市场搜索结果的基础 URL。修改后必须重启 Antigravity 才能使用新的市场。",
+    "Changes the base URL on each extension page. You must restart Antigravity to use the new marketplace after changing this value.": "更改每个扩展页面的基础 URL。修改后必须重启 Antigravity 才能使用新的市场。",
+    "Build with Antigravity Plugins": "使用 Antigravity 插件构建",
+    "Plugins are packaged collections of skills and MCPs to help the Agent in": "插件是技能和 MCP 的打包集合，用于帮助智能体",
+    "work with Google developer products. You can always change your choices in Settings.": "使用 Google 开发者产品。你随时可以在设置中更改选择。",
+    "External tools the agent can call via Model Context Protocol.": "智能体可通过 Model Context Protocol 调用的外部工具。",
+    "Search MCP servers by name": "按名称搜索 MCP 服务器",
+    "Enter tool name or server...": "输入工具名称或服务器...",
+    "MCP Configuration Error:": "MCP 配置错误：",
+    "Google Drive integration not available": "Google Drive 集成不可用",
+    "For help, visit": "如需帮助，请访问",
+    "and": "和",
+    "including": "包括",
+    ". Local permissions have higher priority.": "。本地权限优先级更高。",
+    "Inherits from": "继承自",
+    "Add scheduled task": "添加定时任务",
+    "No scheduled tasks configured.": "尚未配置定时任务。",
+    "Search conversations...": "搜索对话...",
+    "Search tasks...": "搜索任务...",
+    "Outside of Project": "项目外",
+    "Permanently delete": "永久删除",
+    "File Picker": "文件选择器",
+    "Avatar URL": "头像 URL",
+    "Bot Name": "机器人名称",
+    "Enter avatar URL (optional)": "输入头像 URL（可选）",
+    "Enter bot name (optional)": "输入机器人名称（可选）",
+    "Setup Jetski Chat": "设置 Jetski Chat",
+    "Configure a chat bot so you can use Jetski directly from Google Chat.": "配置聊天机器人，以便直接在 Google Chat 中使用 Jetski。",
+    "Manage your notification preferences.": "管理你的通知偏好。",
+    "Using the Antigravity Python SDK to build AI agents": "使用 Antigravity Python SDK 构建 AI 智能体",
+    "Add MCP Servers": "添加 MCP 服务器",
+    "A Model Context Protocol server for interacting with MongoDB Atlas.": "用于与 MongoDB Atlas 交互的 Model Context Protocol 服务器。",
+    "A Model Context Protocol server that provides structured thinking and reasoning capabilities for LLM conversations.": "为 LLM 对话提供结构化思考和推理能力的 Model Context Protocol 服务器。",
+    "An MCP server implementation that integrates the Perplexity Sonar API to provide real-time, web-wide research capabilities.": "集成 Perplexity Sonar API 的 MCP 服务器实现，可提供实时的全网研究能力。",
+    "Atlassian MCP Server for interacting with Atlassian products.": "用于与 Atlassian 产品交互的 Atlassian MCP 服务器。",
+    "Airweave lets agents search any app.": "Airweave 可让智能体搜索任何应用。",
+    "Chrome DevTools for agents": "面向智能体的 Chrome DevTools",
+    "Enable Antigravity to control and inspect a live Chrome browser, with access to the full power of Chrome DevTools for reliable automation, in-depth debugging, and performance analysis.": "允许 Antigravity 控制和检查实时 Chrome 浏览器，并使用 Chrome DevTools 的完整能力进行可靠自动化、深入调试和性能分析。",
+    "Reliable automation, in-depth debugging, and performance analysis in Chrome using Chrome DevTools and Puppeteer": "使用 Chrome DevTools 和 Puppeteer 在 Chrome 中进行可靠自动化、深入调试和性能分析",
+    "Enable Antigravity to deploy apps to Google Cloud Run.": "允许 Antigravity 将应用部署到 Google Cloud Run。",
+    "Enable Antigravity to interact with Google Kubernetes Engine (GKE).": "允许 Antigravity 与 Google Kubernetes Engine (GKE) 交互。",
+    "Access resources in the Cloud Logging platform using natural language.": "使用自然语言访问 Cloud Logging 平台中的资源。",
+    "Access resources in the Cloud Monitoring platform using natural language.": "使用自然语言访问 Cloud Monitoring 平台中的资源。",
+    "Access enterprise mobility data using natural language queries about device fleets, automated auditing of policy compliance, and the integration of device management data into broader automated workflows.": "通过自然语言查询设备群、自动审计策略合规性，并将设备管理数据集成到更广泛的自动化工作流中，从而访问企业移动管理数据。",
+    "Connect your Supabase projects to AI assistants. This MCP server allows managing tables, fetching config, executing SQL queries, managing edge functions, and working with database schema in your Supabase projects.": "将你的 Supabase 项目连接到 AI 助手。此 MCP 服务器可管理表、获取配置、执行 SQL 查询、管理边缘函数，并处理 Supabase 项目中的数据库架构。",
+    "Core tools and knowledge required to develop for Android": "Android 开发所需的核心工具和知识",
+    "Curated collection of agent skills for science.": "面向科学场景精选的智能体技能集合。",
+    "Figma Dev Mode MCP": "Figma 开发模式 MCP",
+    "The Dev Mode MCP Server brings Figma directly into your workflow by providing important design information and context to AI agents generating code from Figma design files.": "开发模式 MCP 服务器会向根据 Figma 设计文件生成代码的 AI 智能体提供重要设计信息和上下文，从而将 Figma 直接带入你的工作流。",
+    "The Dart and Flutter MCP server exposes Dart (and Flutter) development tool actions to compatible AI-assistant clients.": "Dart 和 Flutter MCP 服务器会向兼容的 AI 助手客户端暴露 Dart（和 Flutter）开发工具操作。",
+    "The Firebase Model Context Protocol (MCP) Server gives AI-powered development tools the ability to work with your Firebase projects and your app's codebase.": "Firebase Model Context Protocol (MCP) 服务器让 AI 开发工具能够处理你的 Firebase 项目和应用代码库。",
+    "The Genkit Model Context Protocol (MCP) Server gives AI-powered development tools the ability to build, debug and inspect your Genkit app.": "Genkit Model Context Protocol (MCP) 服务器让 AI 开发工具能够构建、调试和检查你的 Genkit 应用。",
+    "The GitHub MCP Server is a Model Context Protocol (MCP) server that provides seamless integration with GitHub APIs, enabling advanced automation and interaction capabilities for developers and tools.": "GitHub MCP 服务器是一个 Model Context Protocol (MCP) 服务器，可与 GitHub API 无缝集成，为开发者和工具提供高级自动化与交互能力。",
+    "The Heroku Platform MCP Server enables seamless interaction with Heroku Platform resources, allowing LLMs to read, manage, and operate applications, add-ons, databases, and more.": "Heroku Platform MCP 服务器支持与 Heroku Platform 资源无缝交互，让 LLM 能够读取、管理和操作应用、附加组件、数据库等。",
+    "The Locofy MCP Server enables Locofy.ai code to be integrated and extended with your IDE.": "Locofy MCP 服务器可让 Locofy.ai 代码与你的 IDE 集成并扩展。",
+    "The MCP Toolbox for Databases is an open-source MCP server designed to simplify and secure the development of tools for interacting with databases.": "MCP Toolbox for Databases 是一个开源 MCP 服务器，旨在简化并保护数据库交互工具的开发。",
+    "The Pinecone MCP Server enables AI tools to search Pinecone documentation, configure indexes, generate code informed by your index configuration, and upsert/search data in your Pinecone indexes.": "Pinecone MCP 服务器让 AI 工具能够搜索 Pinecone 文档、配置索引、基于索引配置生成代码，并在 Pinecone 索引中写入或搜索数据。",
+    "The Postman MCP Server connects Postman to AI tools, giving AI agents and assistants the ability to access workspaces, manage collections and environments, evaluate APIs, and automate workflows through natural language interactions.": "Postman MCP 服务器将 Postman 连接到 AI 工具，让 AI 智能体和助手能够访问工作区、管理集合和环境、评估 API，并通过自然语言交互自动化工作流。",
+    "The Prisma MCP Server enables AI tools to interact with Prisma for creating and managing Postgres databases easily.": "Prisma MCP 服务器让 AI 工具能够与 Prisma 交互，轻松创建和管理 Postgres 数据库。",
+    "The Spanner remote MCP server lets you access and run Spanner tools to create, manage, and query Spanner resources from your AI-enabled development environments and AI agent platforms.": "Spanner 远程 MCP 服务器可让你在支持 AI 的开发环境和智能体平台中访问并运行 Spanner 工具，以创建、管理和查询 Spanner 资源。",
+    "The Stripe Model Context Protocol server allows you to integrate with Stripe APIs through function calling. This protocol supports various tools to interact with different Stripe services.": "Stripe Model Context Protocol 服务器可让你通过函数调用集成 Stripe API。该协议支持多种工具与不同的 Stripe 服务交互。",
+    "The gopls Model Context Protocol (MCP) server provides tools for semantic code analysis, live diagnostics, and transformation of your non-google3 Go codebase.": "gopls Model Context Protocol (MCP) 服务器为非 google3 Go 代码库提供语义代码分析、实时诊断和代码转换工具。",
+    "This MCP server provides your LLM with docs and examples to instrument your AI apps with Arize AX. It also provides access to Arize support. Connect it to your IDE or LLM and get curated tracing examples, best practices and Arize support!": "此 MCP 服务器为你的 LLM 提供文档和示例，用于通过 Arize AX 为 AI 应用接入观测能力。它还提供 Arize 支持入口。连接到 IDE 或 LLM 后，可获得精选追踪示例、最佳实践和 Arize 支持。",
+    "Harness MCP Server allows AI assistants to interact with the Harness platform APIs, enabling intelligent automation and assistance for software delivery and cloud operations.": "Harness MCP 服务器允许 AI 助手与 Harness 平台 API 交互，为软件交付和云运维提供智能自动化与辅助能力。",
+    "Interact directly with the PostHog product analytics platform using natural language. Run queries, manage feature flags, track errors, and manage projects.": "使用自然语言直接与 PostHog 产品分析平台交互。可运行查询、管理功能开关、跟踪错误并管理项目。",
+    "Interact with Redis key-value stores": "与 Redis 键值存储交互",
+    "Interact with documents stored in a Firestore database using natural language.": "使用自然语言与 Firestore 数据库中存储的文档交互。",
+    "Keep your coding agent up to date with the latest web best practices.": "让你的编码智能体保持最新的 Web 最佳实践。",
+    "MCP Toolbox for Databases": "数据库 MCP 工具箱",
+    "Manage Pub/Sub resources and publish messages. Create, list, get, update, and delete Pub/Sub topics, subscriptions, and snapshots, as well as publish messages to topics.": "管理 Pub/Sub 资源并发布消息。可创建、列出、获取、更新和删除 Pub/Sub 主题、订阅和快照，也可向主题发布消息。",
+    "Manage clusters for Managed Service for Apache Kafka and Kafka Connect using natural language.": "使用自然语言管理 Managed Service for Apache Kafka 和 Kafka Connect 的集群。",
+    "Neon MCP Server is an open-source tool that lets you interact with your Neon Postgres databases in natural language.": "Neon MCP 服务器是一个开源工具，可让你使用自然语言与 Neon Postgres 数据库交互。",
+    "Netlify MCP Server enables AI assistants to interact with Netlify's platform for managing sites, deployments, domains, and other web development workflows.": "Netlify MCP 服务器让 AI 助手能够与 Netlify 平台交互，用于管理站点、部署、域名和其他 Web 开发工作流。",
+    "Official Linear.app MCP Server for interacting with Linear projects, issues, and workflows.": "用于与 Linear 项目、议题和工作流交互的官方 Linear.app MCP 服务器。",
+    "Official Notion MCP Server that allows interaction with Notion workspaces, pages, databases, and comments via the Notion API.": "官方 Notion MCP 服务器，可通过 Notion API 与 Notion 工作区、页面、数据库和评论交互。",
+    "Official PayPal MCP Server that allows integration with PayPal APIs for payment processing, transaction management, and account operations.": "官方 PayPal MCP 服务器，可集成 PayPal API，用于支付处理、交易管理和账户操作。",
+    "Perform searches on ingested data in Google-owned data stores.": "在 Google 拥有的数据存储中对已摄取的数据执行搜索。",
+    "Prototype, build & run modern apps users love with Firebase's backend, AI, and operational infrastructure.": "借助 Firebase 的后端、AI 和运维基础设施，原型设计、构建并运行用户喜爱的现代应用。",
+    "Search your Google Cloud projects using natural language.": "使用自然语言搜索你的 Google Cloud 项目。",
+    "SonarQube MCP Server enables AI assistants to interact with SonarQube instances for code quality analysis, project management, and quality gate operations.": "SonarQube MCP 服务器让 AI 助手能够与 SonarQube 实例交互，用于代码质量分析、项目管理和质量门禁操作。",
+    "Sonatype MCP server for interacting with our dependency management and security intelligence platform.": "用于与依赖管理和安全情报平台交互的 Sonatype MCP 服务器。",
+    "The Bigtable Admin remote MCP server lets you manage Bigtable resources.": "Bigtable Admin 远程 MCP 服务器可让你管理 Bigtable 资源。",
+    "Vertex AI Search": "Vertex AI Search"
   }));
 
   const phrases = [
+    ["并访问项目和屏幕 details. See https://stitch.withgoogle.com/docs for mor", "并访问项目和屏幕详情。更多信息请查看 https://stitch.withgoogle.com/docs"],
+    ["details. See https://stitch.withgoogle.com/docs for mor", "详情。更多信息请查看 https://stitch.withgoogle.com/docs"],
+    ["information for Google's products such as Firebase, Google Cloud,", "Google 产品的信息，例如 Firebase、Google Cloud、"],
+    ["查看备份和账单详情，让智能体工具能够利用 ClickHous", "查看备份和账单详情，让智能体工具能够利用 ClickHouse"],
+    ["and instance 模板、管理磁盘和快照，并检索预留和承诺使用相关", "和实例模板、管理磁盘和快照，并检索预留和承诺使用相关"],
+    ["管理实例组管理器 and instance 模板", "管理实例组管理器和实例模板"],
+    ["The Stitch MCP server enables AI assistants to interact with Stitch for vibe design: generating UI designs from text and images, and accessing project and screen details. See https://stitch.withgoogle.com/docs for mor", "Stitch MCP 服务器让 AI 助手能够与 Stitch 交互，用于 vibe design：根据文本和图片生成 UI 设计，并访问项目和屏幕详情。更多信息请查看 https://stitch.withgoogle.com/docs"],
+    ["The Google Developer Knowledge MCP server gives AI-powered development tools the ability to search Google's official developer documentation and retrieve information for Google's products such as Firebase, Google Cloud,", "Google Developer Knowledge MCP 服务器让 AI 开发工具能够搜索 Google 官方开发者文档，并检索 Firebase、Google Cloud 等 Google 产品的信息。"],
+    ["The ClickHouse MCP server enables agents to securely interact with ClickHouse databases. It provides a universal interface to execute SQL, explore data, and view backup & billing details, allowing agentic tooling to leverage ClickHous", "ClickHouse MCP 服务器让智能体能够安全地与 ClickHouse 数据库交互。它提供通用接口，用于执行 SQL、探索数据、查看备份和账单详情，让智能体工具能够利用 ClickHouse。"],
+    ["Perform a range of infrastructure management tasks, including: manage virtual machine (VM) instances, manage instance group managers and instance templates, manage disks and snapshots, retrieve information about reservations and commitments", "执行一系列基础设施管理任务，包括：管理虚拟机 (VM) 实例、管理实例组管理器和实例模板、管理磁盘和快照，并检索预留和承诺使用相关信息"],
+    ["AlloyDB for PostgreSQL 远程 MCP 服务器可让你访问并运行 AlloyDB 工具，用于管理 AlloyDB 集群和实例、管理用户、创建和恢复 备份、管理用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。", "AlloyDB for PostgreSQL 远程 MCP 服务器可让你访问并运行 AlloyDB 工具，用于管理 AlloyDB 集群和实例、管理用户、创建和恢复备份、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。"],
+    ["The Cloud SQL remote MCP server lets you access and run Cloud SQL tools to manage Cloud SQL instances, manage users, create and restore 备份、管理用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。", "Cloud SQL 远程 MCP 服务器可让你访问并运行 Cloud SQL 工具，用于管理 Cloud SQL 实例、管理用户、创建和恢复备份、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。"],
+    ["Cloud SQL 远程 MCP 服务器可让你访问并运行 Cloud SQL 工具，用于管理 Cloud SQL 实例、管理用户、创建和恢复备份、执行管理操作 用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。", "Cloud SQL 远程 MCP 服务器可让你访问并运行 Cloud SQL 工具，用于管理 Cloud SQL 实例、管理用户、创建和恢复备份、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。"],
+    ["ClickHouse MCP 服务器让智能体能够安全地与 ClickHouse 数据库交互。它提供通用接口，用于执行 SQL、探索数据并查看 备份和账单详情，让智能体工具能够利用 ClickHouse 的高性能分析能力。", "ClickHouse MCP 服务器让智能体能够安全地与 ClickHouse 数据库交互。它提供通用接口，用于执行 SQL、探索数据、查看备份和账单详情，让智能体工具能够利用 ClickHouse 的高性能分析能力。"],
+    ["使用自然语言与你的 BigQuery 数据交互。此 MCP 服务器可安全连接到你的数据集，用于搜索数据集、检查表 元数据、执行 SQL 查询、生成时间序列预测、 并直接从你的 AI 工具执行贡献分析。", "使用自然语言与你的 BigQuery 数据交互。此 MCP 服务器可安全连接到你的数据集，用于搜索数据集、检查表元数据、执行 SQL 查询、生成时间序列预测，并直接从你的 AI 工具执行贡献分析。"],
+    ["将你的 GitLab SDLC 作为知识图谱查询。Orbit 会索引群组、项目、源代码、合并请求、流水线、工作项和安全发现，并整理为 单一图谱，使智能体能够回答影响范围、 入门引导和依赖映射问题，而不是在分散系统中逐个检索。", "将你的 GitLab SDLC 作为知识图谱查询。Orbit 会索引群组、项目、源代码、合并请求、流水线、工作项和安全发现，并整理为单一图谱，使智能体能够回答影响范围、入门引导和依赖映射问题，而不是在分散系统中逐个检索。"],
+    ["执行一系列基础设施管理任务，包括：管理虚拟机 (VM) 实例, 管理实例组管理器 and instance 模板、管理磁盘和快照，并检索预留和承诺使用相关信息。", "执行一系列基础设施管理任务，包括：管理虚拟机 (VM) 实例、管理实例组管理器和实例模板、管理磁盘和快照，并检索预留和承诺使用相关信息。"],
+    ["使用自然语言与你的 Oracle Database 数据交互。此 MCP 服务器可安全连接到你的数据库，用于执行 SQL 查询、 inspecting table schemas, and troubleshooting database performance issues directly from your AI tools.", "使用自然语言与你的 Oracle Database 数据交互。此 MCP 服务器可安全连接到你的数据库，用于执行 SQL 查询、检查表架构，并直接从你的 AI 工具排查数据库性能问题。"],
+    ["将你的 AI 助手连接到 Knowledge Catalog（原 Dataplex）。此 MCP 服务器允许你搜索内容，从而实现数据发现和治理 for data assets, retrieve detailed metadata such as schemas and ownership, and explore aspect types across your distributed data.", "将你的 AI 助手连接到 Knowledge Catalog（原 Dataplex）。此 MCP 服务器允许你搜索数据资产、检索架构和所有权等详细元数据，并探索分布式数据中的方面类型，从而实现数据发现和治理。"],
+    ["将你的 AI 助手连接到 Looker 商业智能。此 MCP 服务器允许你执行自然语言操作，从而进行数据探索和内容管理 language queries, run saved Looks, create and manage dashboards, and perform instance health checks within your Looker environment.", "将你的 AI 助手连接到 Looker 商业智能。此 MCP 服务器允许你执行自然语言查询、运行已保存的 Looks、创建和管理仪表板，并在 Looker 环境中执行实例健康检查，从而进行数据探索和内容管理。"],
+    ["Google Maps Platform Code Assist MCP 服务器会为你常用的 AI 编码助手提供最新的官方 Google Maps Platform 文档和代码 samples, and best practices. By grounding your AI assistant in our official resources, it can generate more accurate, reliable, and useful code.", "Google Maps Platform Code Assist MCP 服务器会为你常用的 AI 编码助手提供最新的官方 Google Maps Platform 文档、代码示例和最佳实践。通过让 AI 助手基于我们的官方资源，它可以生成更准确、可靠且实用的代码。"],
+    ["samples, and best practices. By grounding your AI assistant in our official resources, it can generate more accurate, reliable, and useful code.", "示例和最佳实践。通过让 AI 助手基于我们的官方资源，它可以生成更准确、可靠且实用的代码。"],
+    ["inspecting table schemas, and troubleshooting database performance issues directly from your AI tools.", "检查表架构，并直接从你的 AI 工具排查数据库性能问题。"],
+    ["for data assets, retrieve detailed metadata such as schemas and ownership, and explore aspect types across your distributed data.", "数据资产、检索架构和所有权等详细元数据，并探索分布式数据中的方面类型。"],
+    ["language queries, run saved Looks, create and manage dashboards, and perform instance health checks within your Looker environment.", "查询、运行已保存的 Looks、创建和管理仪表板，并在 Looker 环境中执行实例健康检查。"],
+    ["Initiating Coding Assistance", "正在启动编码辅助"],
+    ["Initiating Programming Assistance", "正在启动编程辅助"],
+    ["Initiating Technical Assistance", "正在启动技术辅助"],
+    ["Starting Assistant Collaboration", "正在启动助手协作"],
+    ["Starting Development Session", "正在启动开发会话"],
+    ["backups, administer users, import and export data, and run SQL queries from your AI-enabled development environments and AI agent platforms.", "备份、管理用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。"],
+    ["backups, administer users, import and export data, and run SQL queries from your AI-enabled development environments and AI agent platforms", "备份、管理用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询"],
+    ["users, import and export data, and run SQL queries from your AI-enabled development environments and AI agent platforms.", "用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询。"],
+    ["users, import and export data, and run SQL queries from your AI-enabled development environments and AI agent platforms", "用户、导入和导出数据，并在支持 AI 的开发环境和 AI 智能体平台中运行 SQL 查询"],
+    ["backup & billing details, allowing agentic tooling to leverage ClickHouse's high-performance analytical capabilities.", "备份和账单详情，让智能体工具能够利用 ClickHouse 的高性能分析能力。"],
+    ["backup & billing details, allowing agentic tooling to leverage ClickHouse's high-performance analytical capabilities", "备份和账单详情，让智能体工具能够利用 ClickHouse 的高性能分析能力"],
+    ["and perform contribution analysis directly from your AI tools.", "并直接从你的 AI 工具执行贡献分析。"],
+    ["and perform contribution analysis directly from your AI tools", "并直接从你的 AI 工具执行贡献分析"],
+    ["onboarding, and dependency mapping questions by traversing real relationships instead of grepping across separate systems.", "入门引导和依赖映射问题，而不是在分散系统中逐个检索。"],
+    ["onboarding, and dependency mapping questions by traversing real relationships instead of grepping across separate systems", "入门引导和依赖映射问题，而不是在分散系统中逐个检索"],
+    ["templates, manage disks and snapshots, retrieve information about reservations and commitments.", "模板、管理磁盘和快照，并检索预留和承诺使用相关信息。"],
+    ["templates, manage disks and snapshots, retrieve information about reservations and commitments", "模板、管理磁盘和快照，并检索预留和承诺使用相关信息"],
+    ["s, manage disks and snapshots, retrieve information about reservations and commitments.", "、管理磁盘和快照，并检索预留和承诺使用相关信息。"],
+    ["s, manage disks and snapshots, retrieve information about reservations and commitments", "、管理磁盘和快照，并检索预留和承诺使用相关信息"],
+    ["The Google Maps Platform Code Assist MCP server provides your favorite AI coding assistant with up-to-date, official Google Maps Platform documentation, code", "Google Maps Platform Code Assist MCP 服务器会为你常用的 AI 编码助手提供最新的官方 Google Maps Platform 文档和代码"],
+    ["Connect your AI assistants to Looker business intelligence. This MCP server enables data exploration and content management by allowing you to execute natural", "将你的 AI 助手连接到 Looker 商业智能。此 MCP 服务器允许你执行自然语言操作，从而进行数据探索和内容管理"],
+    ["Connect your AI assistants to the Knowledge Catalog (formerly known as Dataplex). This MCP server enables data discovery and governance by allowing you to search", "将你的 AI 助手连接到 Knowledge Catalog（原 Dataplex）。此 MCP 服务器允许你搜索内容，从而实现数据发现和治理"],
+    ["Interact with your Oracle Database data using natural language. This MCP server allows you to securely connect to your databases for executing SQL queries,", "使用自然语言与你的 Oracle Database 数据交互。此 MCP 服务器可安全连接到你的数据库，用于执行 SQL 查询、"],
+    ["single graph so agents can answer blast radius,", "单一图谱，使智能体能够回答影响范围、"],
+    ["single graph so agents can answer blast radius", "单一图谱，使智能体能够回答影响范围"],
+    ["metadata, execute SQL queries, generate time-series forecasts,", "元数据、执行 SQL 查询、生成时间序列预测、"],
+    ["metadata, execute SQL queries, generate time-series forecasts", "元数据、执行 SQL 查询、生成时间序列预测"],
+    ["inspect table metadata", "检查表元数据"],
+    ["execute SQL queries", "执行 SQL 查询"],
+    ["generate time-series forecasts", "生成时间序列预测"],
+    ["The Stitch MCP server enables AI assistants to interact with Stitch for vibe design: generating UI designs from text and images, and accessing project and screen", "Stitch MCP 服务器让 AI 助手能够与 Stitch 交互，用于 vibe design：根据文本和图片生成 UI 设计，并访问项目和屏幕"],
+    ["The Google Developer Knowledge MCP server gives AI-powered development tools the ability to search Google's official developer documentation and retrieve", "Google Developer Knowledge MCP 服务器让 AI 开发工具能够搜索 Google 官方开发者文档并检索"],
+    ["The ClickHouse MCP server enables agents to securely interact with ClickHouse databases. It provides a universal interface to execute SQL, explore data, and view", "ClickHouse MCP 服务器让智能体能够安全地与 ClickHouse 数据库交互。它提供通用接口，用于执行 SQL、探索数据并查看"],
+    ["Perform a range of infrastructure management tasks, including: manage virtual machine (VM) instances, manage instance group managers and instance template", "执行一系列基础设施管理任务，包括：管理虚拟机 (VM) 实例、管理实例组管理器和实例模板"],
+    ["manage virtual machine (VM) instances", "管理虚拟机 (VM) 实例"],
+    ["manage instance group managers", "管理实例组管理器"],
+    ["instance template", "实例模板"],
+    ["and accessing project and screen", "并访问项目和屏幕"],
+    ["and retrieve", "并检索"],
+    ["and view", "并查看"],
+    ["Query your GitLab SDLC as a knowledge graph. Orbit indexes groups, projects, source code, merge requests, pipelines, work items, and security findings into a", "将你的 GitLab SDLC 作为知识图谱查询。Orbit 会索引群组、项目、源代码、合并请求、流水线、工作项和安全发现，并整理为"],
+    ["Interact with your BigQuery data using natural language. This MCP server allows you to securely connect to your datasets to search the datasets, inspect table", "使用自然语言与你的 BigQuery 数据交互。此 MCP 服务器可安全连接到你的数据集，用于搜索数据集、检查表"],
+    ["The AlloyDB for PostgreSQL remote MCP server lets you access and run AlloyDB tools to manage AlloyDB clusters and instances, manage users, create and restore", "AlloyDB for PostgreSQL 远程 MCP 服务器可让你访问并运行 AlloyDB 工具，用于管理 AlloyDB 集群和实例、管理用户、创建和恢复"],
+    ["The Cloud SQL remote MCP server lets you access and run Cloud SQL tools to manage Cloud SQL instances, manage users, create and restore backups, administer", "Cloud SQL 远程 MCP 服务器可让你访问并运行 Cloud SQL 工具，用于管理 Cloud SQL 实例、管理用户、创建和恢复备份、执行管理操作"],
+    ["The Cloud SQL remote MCP server lets you access and run Cloud SQL tools to manage Cloud SQL instances, manage users, create and restore backups", "Cloud SQL 远程 MCP 服务器可让你访问并运行 Cloud SQL 工具，用于管理 Cloud SQL 实例、管理用户、创建和恢复备份"],
+    ["Interact with your BigQuery data using natural language.", "使用自然语言与你的 BigQuery 数据交互。"],
+    ["This MCP server allows you to securely connect to your datasets to search the datasets", "此 MCP 服务器可安全连接到你的数据集，用于搜索数据集"],
+    ["Within each group, models share a weekly limit and a 5-hour limit. Quota is consumed proportionally to the cost of the tokens. Thus, limits will last longer with shorter tasks or using more cost-effective models. The 5-hour limit smooths out aggregate demand to fairly distribute global capacity across all users, while your weekly limit is tied directly to your individual tier.", "每个模型组共享每周限额和五小时限额。配额会按 Token 成本等比例消耗。因此，任务越短或使用成本更低的模型，限额可持续越久。五小时限额用于平滑总体需求，让全球容量能在所有用户之间公平分配；每周限额则与你的个人套餐等级直接相关。"],
+    ["You have used some of your weekly limit, it will fully refresh in ", "你已使用部分每周限额，将在 "],
+    ["You have used some of your 5-hour limit, it will fully refresh in ", "你已使用部分五小时限额，将在 "],
+    ["You can upgrade to Google AI Ultra to receive higher rate limits.", "你可以升级到 Google AI Ultra 以获得更高的速率限制。"],
+    ["You can upgrade to a Google AI Ultra plan to receive higher rate limits.", "你可以升级到 Google AI Ultra 套餐以获得更高的速率限制。"],
+    ["Current Plan:", "当前套餐："],
+    ["Current plan:", "当前套餐："],
+    ["Quota is consumed proportionally to the cost of the tokens.", "配额会按 Token 成本等比例消耗。"],
+    ["The 5-hour limit smooths out aggregate demand to fairly distribute global capacity across all users, while your weekly limit is tied directly to your individual tier.", "五小时限额用于平滑总体需求，让全球容量能在所有用户之间公平分配；每周限额则与你的个人套餐等级直接相关。"],
+    ["Thus, limits will last longer with shorter tasks or using more cost-effective models.", "因此，任务越短或使用成本更低的模型，限额可持续越久。"],
+    ["Within each group, models share a weekly limit and a 5-hour limit.", "每个模型组共享每周限额和五小时限额。"],
+    ["Configure allowed and denied browser actuation URLs.", "配置允许和拒绝浏览器操作的 URL。"],
+    ["Configure allowed and denied URLs for browser actuation.", "配置允许和拒绝浏览器操作的 URL。"],
+    ["Configure allowed and denied browser operation URLs.", "配置允许和拒绝浏览器操作的 URL。"],
+    ["Configure allowed and denied URLs for reading.", "配置允许和拒绝读取的 URL。"],
+    ["Configure allowed and denied paths for file reads and writes.", "配置文件读写允许和拒绝的路径。"],
+    ["Configure allowed terminal commands.", "配置允许的终端命令。"],
+    ["Configure commands that are allowed to run outside the sandbox.", "配置允许在沙盒外执行的命令。"],
+    ["Configure allowed commands outside the sandbox.", "配置允许在沙盒外执行的命令。"],
+    ["Configure external tools via Model Context Protocol.", "通过 Model Context Protocol 配置外部工具。"],
+    ["The breakdown below shows token usage from customizations like skills, rules, and MCP. If the budget is exceeded, large customizations will be truncated automatically.", "下方明细显示技能、规则和 MCP 等自定义内容的 Token 使用量。如果超出预算，较大的自定义内容会被自动截断。"],
+    ["There are no customizations enabled.", "当前未启用任何自定义内容。"],
+    ["Permanently delete ", "永久删除 "],
+    [" including ", "，包括 "],
+    [" active conversations", " 个活跃对话"],
+    [" active conversation", " 个活跃对话"],
+    [" archived conversations", " 个已归档对话"],
+    [" archived conversation", " 个已归档对话"],
+    ["Requires manual review for all terminal commands and file accesses outside of the working folders.", "所有终端命令以及工作文件夹外的文件访问都需要手动确认。"],
+    ["All terminal commands require review. The agent can read or write to any file in the machine.", "所有终端命令都需要确认。智能体可以读取或写入此电脑上的任何文件。"],
+    ["Disables all safety barriers for maximal iteration velocity.", "禁用所有安全屏障，以获得最快迭代速度。"],
+    ["Block all browser JavaScript execution.", "阻止所有浏览器 JavaScript 执行。"],
+    ["Prompt for approval before running browser scripts.", "运行浏览器脚本前请求批准。"],
+    ["Allow full browser script execution without prompting.", "无需提示即可允许完整的浏览器脚本执行。"],
+    ["Google Chrome to be installed", "安装 Google Chrome"],
+    ["Google Chrome", "Google Chrome"],
+    ["Always Proceed", "始终继续"],
+    ["Full Machine", "整机访问"],
+    ["Full machine", "整机访问"],
+    ["Turbo mode", "极速模式"],
+    ["Turbo Mode", "极速模式"],
+    ["Gemini Models", "Gemini 模型"],
+    ["Weekly Limit", "每周限额"],
+    ["Five Hour Limit", "五小时限额"],
+    ["Five-Hour Limit", "五小时限额"],
+    ["Model Context Protocol", "Model Context Protocol"],
+    ["Add MCP +", "添加 MCP +"],
+    ["Show all", "显示全部"],
+    [" days", " 天"],
+    [" day", " 天"],
+    [" hrs", " 小时"],
+    [" hr", " 小时"],
+    [" seconds", " 秒"],
+    [" second", " 秒"],
     ["它需要安装 Google Chrome to be installed.", "它需要安装 Google Chrome。"],
     ["它需要安装 Google Chrome to be installed", "它需要安装 Google Chrome"],
     ["to be installed. ", "。"],
@@ -557,26 +926,543 @@ function mainWorldPatchScript() {
     [" agents running", " 个智能体正在运行"]
   ];
 
+  const dynamicRules = [
+    [/^Permanently delete (.+?) including (\\d+) active conversation(?:s)? and (\\d+) archived conversation(?:s)?\\.$/i, (_m, name, active, archived) => "永久删除 " + name + "，包括 " + active + " 个活跃对话和 " + archived + " 个已归档对话。"],
+    [/^You have used some of your weekly limit, it will fully refresh in (.+)\\.$/i, (_m, time) => "你已使用部分每周限额，将在 " + time + " 后完全刷新。"],
+    [/^You have used some of your 5-hour limit, it will fully refresh in (.+)\\.$/i, (_m, time) => "你已使用部分五小时限额，将在 " + time + " 后完全刷新。"],
+    [/^Refreshes in (.+)$/i, (_m, time) => "刷新倒计时：" + time],
+    [/^(\\d+(?:\\.\\d+)?)% of the customization budget is available\\.$/i, (_m, percent) => "当前 " + percent + "% 的自定义预算可用。"],
+    [/^Select model, current:\\s*(.+)$/i, (_m, model) => "选择模型，当前：" + model],
+    [/^(\\d+) agent(?:s)? running$/i, (_m, count) => count + " 个智能体正在运行"],
+    [/^No agent(?:s)? running$/i, () => "没有正在运行的智能体"]
+  ];
+
+  const customDictStorageKey = "__antigravityZhCnCustomDict";
   const blocked = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "CODE", "PRE"]);
   const observedRoots = new WeakSet();
-  function translateValue(value) {
-    if (!value || !value.trim) return value;
-    const trimmed = value.trim();
-    const hit = exact.get(trimmed);
-    if (hit) return value.replace(trimmed, hit);
-    let out = value;
-    for (const [from, to] of phrases) out = out.split(from).join(to);
-    return out;
+  const observedFrames = new WeakSet();
+  const untranslated = new Set();
+  const interactiveEvents = [
+    "pointerover",
+    "mouseover",
+    "mouseenter",
+    "pointerenter",
+    "pointerdown",
+    "mousedown",
+    "mouseup",
+    "click",
+    "dblclick",
+    "contextmenu",
+    "focusin",
+    "keydown",
+    "keyup",
+    "input"
+  ];
+
+  function normalizeKey(value) {
+    return String(value)
+      .replace(/\\u00a0/g, " ")
+      .replace(/[\\r\\n\\t]+/g, " ")
+      .replace(/\\s+/g, " ")
+      .trim()
+      .toLocaleLowerCase();
   }
-  function translateAttrs(el) {
-    if (!el.getAttribute) return;
-    for (const attr of ["aria-label", "title", "placeholder", "alt"]) {
-      const value = el.getAttribute(attr);
-      const translated = translateValue(value);
-      if (translated && translated !== value) el.setAttribute(attr, translated);
+
+  const ignoredCandidateKeys = new Set([
+    "alt",
+    "ctrl",
+    "shift",
+    "tab",
+    "antigravity",
+    "google chrome",
+    "gemini 3.1 pro (high)",
+    "mcp",
+    "model context protocol",
+    "and",
+    "or",
+    "ask",
+    "including",
+    "or join the",
+    "chat space",
+    "e.g., curl",
+    "e.g., npm test",
+    "$bytes",
+    "$content",
+    "alloydb for postgresql",
+    "android management api",
+    "chrome devtools",
+    "claude and gpt models",
+    "cloud run",
+    "cloud sql",
+    "creating a login page",
+    "fixing latex syntax errors",
+    "gitlab orbit",
+    "google antigravity sdk",
+    "google cloud bigtable admin",
+    "google cloud firestore",
+    "google cloud logging",
+    "google cloud monitoring",
+    "google cloud pub/sub",
+    "google cloud resource manager",
+    "google compute engine",
+    "google developer knowledge",
+    "google kubernetes engine (oss)",
+    "google managed service for apache kafka",
+    "google maps platform code assist",
+    "jetski chat",
+    "knowledge catalog",
+    "modern web guidance",
+    "one dark pro",
+    "one light",
+    "oracle database",
+    "perplexity ask",
+    "sequential thinking",
+    "solarized light",
+    "sonatype guide",
+    "tokyo night",
+    "go/jetski-chat"
+  ].map(normalizeKey));
+
+  const protectedEnglishTerms = [
+    "AI",
+    "API",
+    "LLM",
+    "MCP",
+    "SDK",
+    "SQL",
+    "URL",
+    "VM",
+    "Antigravity",
+    "Antigravity zh-CN",
+    "Arize AX",
+    "Airweave",
+    "Android",
+    "Artifact",
+    "Atlassian",
+    "BigQuery",
+    "Bigtable",
+    "ClickHouse",
+    "Cloud SQL",
+    "Dart",
+    "Firebase",
+    "Flutter",
+    "GKE",
+    "Genkit",
+    "GitHub",
+    "GitLab SDLC",
+    "Google AI Ultra",
+    "Google",
+    "Google Chat",
+    "Google Cloud",
+    "Google Cloud Run",
+    "Google Drive",
+    "Google Developer Knowledge",
+    "Google Kubernetes Engine",
+    "Harness",
+    "Heroku",
+    "IDE",
+    "Linear.app",
+    "Locofy.ai",
+    "MCP Toolbox for Databases",
+    "Model Context Protocol",
+    "MongoDB Atlas",
+    "Neon",
+    "Netlify",
+    "Notion",
+    "PayPal",
+    "Pinecone",
+    "PostHog",
+    "Postman",
+    "Prisma",
+    "Python",
+    "Redis",
+    "SonarQube",
+    "Spanner",
+    "Stitch",
+    "Stripe",
+    "Supabase",
+    "Token",
+    "gopls",
+    "google3",
+    "localStorage"
+  ];
+
+  const normalizedExact = new Map();
+  for (const [key, translated] of exact.entries()) {
+    normalizedExact.set(normalizeKey(key), translated);
+  }
+
+  function loadCustomDict() {
+    try {
+      const raw = localStorage.getItem(customDictStorageKey);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    } catch {
+      return {};
     }
   }
-  function translateTextNodes(root) {
+
+  function rebuildCustomDict() {
+    const custom = loadCustomDict();
+    globalThis.__antigravityZhCnCustomDict = custom;
+    globalThis.__antigravityZhCnCustomExact = new Map(Object.entries(custom));
+    globalThis.__antigravityZhCnCustomNormalized = new Map(
+      Object.entries(custom).map(([key, translated]) => [normalizeKey(key), translated])
+    );
+  }
+
+  rebuildCustomDict();
+
+  globalThis.__antigravityZhCnAddTranslations = (dict) => {
+    if (!dict || typeof dict !== "object") return false;
+    const current = loadCustomDict();
+    for (const [key, value] of Object.entries(dict)) {
+      if (typeof key === "string" && typeof value === "string" && key.trim() && value.trim()) {
+        current[key] = value;
+      }
+    }
+    localStorage.setItem(customDictStorageKey, JSON.stringify(current));
+    rebuildCustomDict();
+    scheduleDeepScan();
+    return true;
+  };
+
+  globalThis.__antigravityZhCnClearCustomTranslations = () => {
+    localStorage.removeItem(customDictStorageKey);
+    rebuildCustomDict();
+    scheduleDeepScan();
+    return true;
+  };
+
+  function lookupExact(value) {
+    const customExact = globalThis.__antigravityZhCnCustomExact;
+    const customNormalized = globalThis.__antigravityZhCnCustomNormalized;
+    return (customExact && customExact.get(value)) ||
+      (customNormalized && customNormalized.get(normalizeKey(value))) ||
+      exact.get(value) ||
+      normalizedExact.get(normalizeKey(value));
+  }
+
+  function translateDynamic(trimmed) {
+    for (const [pattern, replacer] of dynamicRules) {
+      const match = trimmed.match(pattern);
+      if (match) return replacer(...match);
+    }
+    return undefined;
+  }
+
+  function escapeRegExp(value) {
+    return String(value).replace(new RegExp("[.*+?^" + "$" + "{}()|[\\\\]\\\\\\\\]", "g"), "\\\\$&");
+  }
+
+  function residualEnglishText(value) {
+    let text = String(value || "")
+      .replace(/[\\u3400-\\u9fff]+/g, " ")
+      .replace(/\\s+/g, " ");
+    for (const term of protectedEnglishTerms) {
+      text = text.replace(new RegExp("\\\\b" + escapeRegExp(term) + "\\\\b", "gi"), " ");
+    }
+    text = text
+      .replace(/https?:\\/\\/\\S+/gi, " ")
+      .replace(/[A-Za-z]:\\\\\\S+/g, " ")
+      .replace(/[0-9]+(?:\\.[0-9]+)?/g, " ")
+      .replace(/[^A-Za-z\\s]+/g, " ")
+      .replace(/\\s+/g, " ")
+      .trim();
+    return text;
+  }
+
+  function looksLikeUntranslatedEnglish(value) {
+    const text = String(value || "").replace(/\\s+/g, " ").trim();
+    const key = normalizeKey(text);
+    if (text.length < 3 || text.length > 240) return false;
+    if (ignoredCandidateKeys.has(key)) return false;
+    if (/[\\u3400-\\u9fff]/.test(text)) {
+      const residual = residualEnglishText(text);
+      if (!residual || residual.length < 4) return false;
+      if (ignoredCandidateKeys.has(normalizeKey(residual))) return false;
+      if (!/[A-Za-z]{2,}/.test(residual)) return false;
+      const residualWords = residual.split(/\\s+/).filter(Boolean);
+      if (residualWords.length > 0 && residualWords.every((word) => /^[A-Z0-9][A-Za-z0-9.+-]*$/.test(word))) return false;
+      if (/^[a-z]+(?:\\s+[a-z]+){0,3}$/.test(residual) && !/(agent|agents|answer|datasets|metadata|execute|generate|screen|retrieve|view|template|radius|forecast|forecasts|restore|backup|backups|administer)/i.test(residual)) return false;
+      return true;
+    }
+    if (!/[A-Za-z]{2,}/.test(text)) return false;
+    if (/^[A-Z0-9_./:\\\\-]+$/.test(text)) return false;
+    if (/^(https?:|file:|[A-Za-z]:\\\\)/.test(text)) return false;
+    if (/^[A-Za-z]+(?:\\+[A-Za-z0-9,]+)+$/.test(text)) return false;
+    if (/^[A-Z][A-Za-z0-9.+-]*$/.test(text) && !lookupExact(text)) return false;
+    if (/^[a-z]+(?:\\s+[a-z]+){0,7}$/.test(text) && !/[.!?:)]$/.test(text)) return false;
+    if (/^(or|and|to|for|with|from|in|on)\\s+/i.test(text) && !/[.!?]$/.test(text)) return false;
+    return true;
+  }
+
+  function isLikelyPrivateText(value) {
+    const text = String(value || "").trim();
+    if (!text) return true;
+    if (/@/.test(text)) return true;
+    if (/https?:\\/\\//i.test(text)) return true;
+    if (/[A-Za-z]:\\\\|\\\\\\\\|\\/[\\w.-]+\\//.test(text)) return true;
+    if (/\\.(ts|tsx|js|jsx|json|md|py|java|cpp|c|h|go|rs|cs|html|css|scss|yml|yaml|toml|tex)\\b/i.test(text)) return true;
+    if (/[{};=<>]|=>/.test(text) || text.includes(String.fromCharCode(96, 96, 96))) return true;
+    if (/^\\d+[\\w.-]*$/.test(text)) return true;
+    return false;
+  }
+
+  function rememberUntranslated(value) {
+    const text = String(value || "").replace(/\\s+/g, " ").trim();
+    if (isLikelyPrivateText(text)) return;
+    if (!looksLikeUntranslatedEnglish(text) || untranslated.has(text)) return;
+    if (untranslated.size >= 500) return;
+    untranslated.add(text);
+    globalThis.__antigravityZhCnUntranslated = Array.from(untranslated).sort();
+    clearTimeout(globalThis.__antigravityZhCnReportTimer);
+    globalThis.__antigravityZhCnReportTimer = setTimeout(() => {
+      try {
+        console.info("[Antigravity zh-CN] untranslated English candidates:", globalThis.__antigravityZhCnUntranslated);
+      } catch {}
+    }, 1000);
+  }
+
+  function copyText(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        void navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch {}
+    try {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      const ok = document.execCommand("copy");
+      textarea.remove();
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+
+  function showUntranslatedPanel() {
+    try {
+      const existing = document.getElementById("__antigravityZhCnUntranslatedPanel");
+      if (existing) {
+        existing.remove();
+        return;
+      }
+      const customDict = loadCustomDict();
+      const items = Array.from(untranslated)
+        .filter((item) => !isLikelyPrivateText(item) && looksLikeUntranslatedEnglish(item))
+        .sort();
+      const text = JSON.stringify(items, null, 2);
+      const panel = document.createElement("div");
+      panel.id = "__antigravityZhCnUntranslatedPanel";
+      panel.style.cssText = [
+        "position:fixed",
+        "right:18px",
+        "bottom:18px",
+        "z-index:2147483647",
+        "width:min(980px,calc(100vw - 36px))",
+        "max-height:min(720px,calc(100vh - 36px))",
+        "background:#111",
+        "color:#eee",
+        "border:1px solid #444",
+        "border-radius:8px",
+        "box-shadow:0 18px 60px rgba(0,0,0,.55)",
+        "font:13px/1.5 system-ui,-apple-system,Segoe UI,sans-serif",
+        "display:flex",
+        "flex-direction:column",
+        "overflow:hidden"
+      ].join(";");
+
+      const header = document.createElement("div");
+      header.style.cssText = "display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #333;background:#181818;color:#fff;font:13px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;cursor:move;user-select:none;";
+      const title = document.createElement("div");
+      title.textContent = "Antigravity zh-CN 未命中英文 (" + items.length + ")";
+      title.style.cssText = "font-weight:600;flex:1;";
+
+      let dragState = null;
+      header.addEventListener("pointerdown", (event) => {
+        try {
+          if (event.target && event.target.closest && event.target.closest("button,textarea,input,select")) return;
+          const rect = panel.getBoundingClientRect();
+          dragState = {
+            dx: event.clientX - rect.left,
+            dy: event.clientY - rect.top
+          };
+          panel.style.left = rect.left + "px";
+          panel.style.top = rect.top + "px";
+          panel.style.right = "auto";
+          panel.style.bottom = "auto";
+          if (header.setPointerCapture) header.setPointerCapture(event.pointerId);
+          event.preventDefault();
+        } catch {}
+      });
+      header.addEventListener("pointermove", (event) => {
+        try {
+          if (!dragState) return;
+          const rect = panel.getBoundingClientRect();
+          const maxLeft = Math.max(0, window.innerWidth - rect.width);
+          const maxTop = Math.max(0, window.innerHeight - Math.min(rect.height, window.innerHeight));
+          const left = Math.min(Math.max(0, event.clientX - dragState.dx), maxLeft);
+          const top = Math.min(Math.max(0, event.clientY - dragState.dy), maxTop);
+          panel.style.left = left + "px";
+          panel.style.top = top + "px";
+        } catch {}
+      });
+      const stopDrag = (event) => {
+        try {
+          if (header.releasePointerCapture && event && dragState) header.releasePointerCapture(event.pointerId);
+        } catch {}
+        dragState = null;
+      };
+      header.addEventListener("pointerup", stopDrag);
+      header.addEventListener("pointercancel", stopDrag);
+
+      const status = document.createElement("span");
+      status.style.cssText = "color:#aaa;font-size:12px;";
+
+      const saveButton = document.createElement("button");
+      saveButton.textContent = "保存翻译";
+      saveButton.style.cssText = "background:#2f6feb;color:#fff;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;";
+
+      const copyButton = document.createElement("button");
+      copyButton.textContent = "复制原文";
+      copyButton.style.cssText = "background:#2f6feb;color:#fff;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;";
+      copyButton.onclick = () => {
+        const ok = copyText(text);
+        copyButton.textContent = ok ? "已复制" : "复制失败";
+        setTimeout(() => { copyButton.textContent = "复制原文"; }, 1200);
+      };
+
+      const clearButton = document.createElement("button");
+      clearButton.textContent = "清空";
+      clearButton.style.cssText = "background:#333;color:#fff;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;";
+      clearButton.onclick = () => {
+        untranslated.clear();
+        globalThis.__antigravityZhCnUntranslated = [];
+        panel.remove();
+      };
+
+      const closeButton = document.createElement("button");
+      closeButton.textContent = "关闭";
+      closeButton.style.cssText = "background:#333;color:#fff;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;";
+      closeButton.onclick = () => panel.remove();
+
+      const body = document.createElement("div");
+      body.style.cssText = "overflow:auto;max-height:calc(100vh - 150px);background:#0b0b0b;";
+      const rows = [];
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.textContent = "当前还没有收集到未命中的英文。先打开有英文残留的菜单、下拉框或弹窗，再按 Ctrl+Shift+Alt+Z。";
+        empty.style.cssText = "padding:16px;color:#bbb;";
+        body.appendChild(empty);
+      } else {
+        const table = document.createElement("div");
+        table.style.cssText = "display:grid;grid-template-columns:minmax(260px,1fr) minmax(260px,1fr);gap:0;border-top:1px solid #242424;";
+        const leftHead = document.createElement("div");
+        leftHead.textContent = "原文";
+        leftHead.style.cssText = "position:sticky;top:0;background:#181818;color:#aaa;padding:8px 10px;border-bottom:1px solid #333;font-weight:600;";
+        const rightHead = document.createElement("div");
+        rightHead.textContent = "译文（填写后点保存）";
+        rightHead.style.cssText = "position:sticky;top:0;background:#181818;color:#aaa;padding:8px 10px;border-bottom:1px solid #333;font-weight:600;";
+        table.append(leftHead, rightHead);
+
+        for (const original of items) {
+          const sourceCell = document.createElement("div");
+          sourceCell.textContent = original;
+          sourceCell.style.cssText = "white-space:pre-wrap;word-break:break-word;padding:9px 10px;border-bottom:1px solid #242424;border-right:1px solid #242424;color:#ddd;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;";
+
+          const targetCell = document.createElement("div");
+          targetCell.style.cssText = "padding:6px 8px;border-bottom:1px solid #242424;";
+          const input = document.createElement("textarea");
+          input.value = customDict[original] || "";
+          input.placeholder = "输入中文翻译";
+          input.spellcheck = false;
+          input.style.cssText = "box-sizing:border-box;width:100%;min-height:42px;resize:vertical;background:#161616;color:#fff;border:1px solid #333;border-radius:6px;padding:7px 8px;outline:none;font:12px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;";
+          targetCell.appendChild(input);
+          rows.push({ original, input });
+          table.append(sourceCell, targetCell);
+        }
+        body.appendChild(table);
+      }
+
+      saveButton.onclick = () => {
+        const additions = {};
+        for (const row of rows) {
+          const translated = row.input.value.trim();
+          if (!translated || translated === row.original) continue;
+          additions[row.original] = translated;
+        }
+        const count = Object.keys(additions).length;
+        if (!count) {
+          status.textContent = "没有可保存的译文";
+          return;
+        }
+        globalThis.__antigravityZhCnAddTranslations(additions);
+        for (const original of Object.keys(additions)) untranslated.delete(original);
+        globalThis.__antigravityZhCnUntranslated = Array.from(untranslated).sort();
+        status.textContent = "已保存 " + count + " 条，正在重新扫描";
+        scheduleDeepScan();
+        setTimeout(() => {
+          try {
+            panel.remove();
+            showUntranslatedPanel();
+          } catch {}
+        }, 250);
+      };
+
+      const hint = document.createElement("div");
+      hint.textContent = "快捷键：Ctrl+Shift+Alt+Z。保存后写入本机 localStorage，不会上传。品牌名、项目名和插件说明可以留空不翻译。";
+      hint.style.cssText = "padding:8px 12px;border-top:1px solid #333;color:#aaa;font:12px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;";
+
+      header.append(title, status, saveButton, copyButton, clearButton, closeButton);
+      panel.append(header, body, hint);
+      document.body.appendChild(panel);
+    } catch {}
+  }
+
+  globalThis.__antigravityZhCnShowUntranslated = showUntranslatedPanel;
+
+  function translateValue(value, options = {}) {
+    if (!value || !value.trim) return value;
+    const trimmed = value.trim();
+    const hit = lookupExact(trimmed);
+    if (hit) return value.replace(trimmed, hit);
+    const dynamic = translateDynamic(trimmed);
+    if (dynamic) return value.replace(trimmed, dynamic);
+    let out = value;
+    for (const [from, to] of phrases) out = out.split(from).join(to);
+    const outTrimmed = out.trim();
+    const secondHit = outTrimmed === trimmed ? undefined : lookupExact(outTrimmed);
+    if (secondHit) out = out.replace(outTrimmed, secondHit);
+    if (options.collectUntranslated && looksLikeUntranslatedEnglish(out)) {
+      rememberUntranslated(out.trim());
+    }
+    return out;
+  }
+  function translateAttrs(el, options = {}) {
+    if (!el.getAttribute) return;
+    for (const attr of ["aria-label", "aria-description", "aria-placeholder", "aria-valuetext", "title", "placeholder", "alt", "data-tooltip", "data-title"]) {
+      const value = el.getAttribute(attr);
+      const translated = translateValue(value, options);
+      if (translated && translated !== value) el.setAttribute(attr, translated);
+    }
+    try {
+      if (el instanceof HTMLInputElement && /^(button|submit|reset)$/i.test(el.type || "")) {
+        const translated = translateValue(el.value, options);
+        if (translated && translated !== el.value) el.value = translated;
+      }
+    } catch {}
+  }
+  function translateTextNodes(root, options = {}) {
     if (!root) return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     let node;
@@ -584,20 +1470,24 @@ function mainWorldPatchScript() {
       try {
         const parent = node.parentElement;
         if (!parent || blocked.has(parent.tagName) || parent.isContentEditable) continue;
-        const translated = translateValue(node.nodeValue);
+        if (parent.closest && parent.closest("#__antigravityZhCnUntranslatedPanel")) continue;
+        const translated = translateValue(node.nodeValue, options);
         if (translated !== node.nodeValue) node.nodeValue = translated;
       } catch {}
     }
   }
-  function translateAllAttrs(root) {
+  function translateAllAttrs(root, options = {}) {
     if (!root || !root.querySelectorAll) return;
     try {
-      translateAttrs(root);
+      if (!(root.closest && root.closest("#__antigravityZhCnUntranslatedPanel"))) {
+        translateAttrs(root, options);
+      }
       for (const el of root.querySelectorAll("*")) {
-        if (!blocked.has(el.tagName)) translateAttrs(el);
+        if (el.closest && el.closest("#__antigravityZhCnUntranslatedPanel")) continue;
+        if (!blocked.has(el.tagName)) translateAttrs(el, options);
         if (el.shadowRoot) {
-          translateTextNodes(el.shadowRoot);
-          translateAllAttrs(el.shadowRoot);
+          translateTextNodes(el.shadowRoot, options);
+          translateAllAttrs(el.shadowRoot, options);
         }
       }
     } catch {}
@@ -624,6 +1514,38 @@ function mainWorldPatchScript() {
     clearTimeout(globalThis.__antigravityZhCnMainWorldPatchTimer);
     globalThis.__antigravityZhCnMainWorldPatchTimer = setTimeout(run, 20);
   }
+
+  function scheduleDeepScan() {
+    if (globalThis.__antigravityZhCnDeepScanQueued) return;
+    globalThis.__antigravityZhCnDeepScanQueued = true;
+    scheduleRun();
+    for (const delay of [60, 150, 350, 800, 1500]) {
+      setTimeout(() => run({ collectUntranslated: true }), delay);
+    }
+    setTimeout(() => {
+      globalThis.__antigravityZhCnDeepScanQueued = false;
+    }, 1600);
+  }
+
+  function patchAttachShadow() {
+    try {
+      const proto = Element.prototype;
+      if (!proto.attachShadow || proto.__antigravityZhCnAttachShadowPatched) return;
+      const original = proto.attachShadow;
+      Object.defineProperty(proto, "__antigravityZhCnAttachShadowPatched", { value: true });
+      proto.attachShadow = function(init) {
+        const shadow = original.call(this, init);
+        setTimeout(() => {
+          try {
+            walk(shadow);
+            observeRoot(shadow);
+          } catch {}
+        }, 0);
+        return shadow;
+      };
+    } catch {}
+  }
+
   function observeRoot(root) {
     if (!root || observedRoots.has(root)) return;
     observedRoots.add(root);
@@ -633,7 +1555,42 @@ function mainWorldPatchScript() {
       globalThis.__antigravityZhCnMainWorldPatchObservers.push(observer);
     } catch {}
   }
-  function walk(root, seen = new WeakSet()) {
+
+  function observeInteractiveEvents(doc) {
+    if (!doc || observedFrames.has(doc)) return;
+    observedFrames.add(doc);
+    try {
+      for (const eventName of interactiveEvents) {
+        doc.addEventListener(eventName, scheduleDeepScan, true);
+      }
+      doc.addEventListener("keydown", (event) => {
+        try {
+          if (event.ctrlKey && event.shiftKey && event.altKey && event.code === "KeyZ") {
+            event.preventDefault();
+            showUntranslatedPanel();
+          }
+        } catch {}
+      }, true);
+      doc.addEventListener("visibilitychange", scheduleDeepScan, true);
+    } catch {}
+  }
+
+  function visitFrames(root, options = {}) {
+    if (!root || !root.querySelectorAll) return;
+    try {
+      for (const frame of root.querySelectorAll("iframe, webview")) {
+        try {
+          const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+          if (!doc) continue;
+          observeInteractiveEvents(doc);
+          observeRoot(doc.documentElement);
+          walk(doc.documentElement, new WeakSet(), options);
+        } catch {}
+      }
+    } catch {}
+  }
+
+  function walk(root, seen = new WeakSet(), options = {}) {
     if (!root || seen.has(root)) return;
     seen.add(root);
     observeRoot(root);
@@ -642,16 +1599,25 @@ function mainWorldPatchScript() {
     while (node) {
       try {
         if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.id === "__antigravityZhCnUntranslatedPanel" || (node.closest && node.closest("#__antigravityZhCnUntranslatedPanel"))) {
+            node = walker.nextSibling();
+            continue;
+          }
           if (blocked.has(node.tagName)) {
             node = walker.nextSibling();
             continue;
           }
-          translateAttrs(node);
-          if (node.shadowRoot) walk(node.shadowRoot, seen);
+          translateAttrs(node, options);
+          if (node.shadowRoot) walk(node.shadowRoot, seen, options);
+          if (node.tagName === "IFRAME" || node.tagName === "WEBVIEW") visitFrames(root, options);
         } else if (node.nodeType === Node.TEXT_NODE) {
           const parent = node.parentElement;
           if (parent && !blocked.has(parent.tagName) && !parent.isContentEditable) {
-            const translated = translateValue(node.nodeValue);
+            if (parent.closest && parent.closest("#__antigravityZhCnUntranslatedPanel")) {
+              node = walker.nextNode();
+              continue;
+            }
+            const translated = translateValue(node.nodeValue, options);
             if (translated !== node.nodeValue) node.nodeValue = translated;
           }
         }
@@ -659,14 +1625,17 @@ function mainWorldPatchScript() {
       node = walker.nextNode();
     }
   }
-  function run() {
+  function run(options = {}) {
     try {
+      patchAttachShadow();
+      observeInteractiveEvents(document);
       observeRoot(document.documentElement);
       const root = document.body || document.documentElement;
-      translateTextNodes(root);
-      translateAllAttrs(root);
+      translateTextNodes(root, options);
+      translateAllAttrs(root, options);
       hideSidebarRelativeTimes(root);
-      walk(root);
+      walk(root, new WeakSet(), options);
+      visitFrames(root, options);
     } catch {}
   }
   globalThis.__antigravityZhCnTranslateNow = run;
